@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.invoice.dao.InvoiceArrDao">
+
+	<insert id="insert">
+		INSERT INTO invoice_arrearage(
+		aac001,
+		aac002,
+		aac006,
+		aac009,
+		userid,
+		impdate,
+		flag,
+		aac200
+		) VALUES (
+		#{aac001},
+		#{aac002},
+		#{aac006},
+		#{aac009},
+		#{userid},
+		#{impdate},
+		#{flag},
+		#{aac200}
+		)
+	</insert>
+	<select id="getArr" resultType="InvoiceArrearage">
+		select aac001,aac009,aac006,aac200,aac201,flag from invoice_arrearage where aac001=#{aac001} and aac009=#{aac009}
+	</select>
+</mapper>

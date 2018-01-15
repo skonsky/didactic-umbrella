@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.invoice.dao.InvoiceDao">
+
+	<insert id="insert">
+		INSERT INTO invoice_info(
+		aac001,
+		aac002,
+		aac003,
+		aac004,
+		aac005,
+		aac006,
+		aac007,
+		aac008,
+		aac009,
+		aac010,
+		aac011,
+		aac012,
+		aac013,
+		userid,
+		impdate
+		) VALUES (
+		#{aac001},
+		#{aac002},
+		#{aac003},
+		#{aac004},
+		#{aac005},
+		#{aac006},
+		#{aac007},
+		#{aac008},
+		#{aac009},
+		#{aac010},
+		#{aac011},
+		#{aac012},
+		#{aac013},
+		#{userid},
+		#{impdate}
+		)
+	</insert>
+	<select id="getInvoiceinfo" resultType="Invoice">
+		select 
+			aac001,aac002,aac003,aac004,aac005,aac006,aac011,aac012,aac013   
+		from 
+			invoice_info 
+		where 
+			aac001=#{aac001} and aac009=#{aac009}
+	</select>
+	
+</mapper>

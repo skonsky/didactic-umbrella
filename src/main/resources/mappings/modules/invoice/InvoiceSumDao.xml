@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.invoice.dao.InvoiceSumDao">
+
+	
+
+	<select id="getInvoiceSuminfo" resultType="InvoiceSum">
+		select 
+		b.aac001,b.aac002,a.aac003,a.aac004,a.aac013,b.aac009,a.sum,b.aac006,b.flag,b.userid,c.name,b.impdate 
+		from invoice_arrearage b
+		left join 
+		(select aac001,aac002,aac003,aac004,round(sum(aac006),2) as sum,aac007,sum(aac013) as aac013,aac009 from invoice_info group by aac001,aac009) a 
+		on a.aac001=b.aac001 and a.aac009=b.aac009
+		left join 
+		sys_user c on b.userid=c.id
+	 	WHERE 
+	 	STR_TO_DATE(b.impdate,'%Y-%c-%d') <![CDATA[   >=  ]]>STR_TO_DATE(#{startDate},'%Y-%c-%d') 
+	 	and STR_TO_DATE(b.impdate,'%Y-%c-%d')  <![CDATA[   <=  ]]> STR_TO_DATE(#{endDate},'%Y-%c-%d') 
+	 	and b.flag = #{invoiceSum.flag}	 
+	 	 
+		<if test="invoiceSum.aac001 != null and invoiceSum.aac001 != ''">
+			AND b.aac001 = #{invoiceSum.aac001} 					
+		</if>
+		<if test="invoiceSum.aac002 != null and invoiceSum.aac002 != ''">
+			AND b.aac002 = #{invoiceSum.aac002}					
+		</if>
+		<if test="aac003 == 1">
+			AND aac003 is not null					
+		</if>
+		<if test="aac003 == 2">
+			AND aac003 is null					
+		</if>
+		limit #{pageNo},#{pageSize}
+	</select>
+	
+	<select id="getInvoicePrintinfo" resultType="InvoiceSum">
+		select 
+		b.aac001,b.aac002,a.aac003,a.aac004,a.aac013,b.aac009,a.sum,b.aac006,b.flag,b.userid,c.name,b.impdate 
+		from invoice_arrearage b
+		left join 
+		(select aac001,aac002,aac003,aac004,round(sum(aac006),2) as sum,aac007,sum(aac013) as aac013,aac009 from invoice_info group by aac001,aac009) a 
+		on a.aac001=b.aac001 and a.aac009=b.aac009
+		left join 
+		sys_user c on b.printuserid=c.id
+	 	WHERE b.flag = 1  
+	 	<if test="startDate != null and startDate != ''">
+	 	and STR_TO_DATE(b.printdate,'%Y-%c-%d') <![CDATA[   >=  ]]>STR_TO_DATE(#{startDate},'%Y-%c-%d') 
+	 	</if>
+	 	<if test="endDate != null and endDate != ''">
+	 	and STR_TO_DATE(b.printdate,'%Y-%c-%d')  <![CDATA[   <=  ]]> STR_TO_DATE(#{endDate},'%Y-%c-%d') 
+	 	</if>	  
+		<if test="invoiceSum.aac001 != null and invoiceSum.aac001 != ''">
+			AND b.aac001 = #{invoiceSum.aac001} 					
+		</if>
+		<if test="invoiceSum.aac002 != null and invoiceSum.aac002 != ''">
+			AND b.aac002 = #{invoiceSum.aac002}					
+		</if>
+		<if test="flag == 1">
+			AND b.printuserid = #{invoiceSum.userid}					
+		</if>		
+	</select>
+	<select id="">
+		
+	</select>
+</mapper>

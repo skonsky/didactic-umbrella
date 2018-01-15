@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.invoice.dao.InvoiceStatusDao">
+
+	
+
+	<select id="getInvoiceStatusinfo" resultType="InvoiceStatus">
+		SELECT 
+			b.aac001,b.aac002,a.aac003,a.aac004,b.aac006,printuserid,c.name,printdate,b.aac009 
+		from invoice_arrearage b
+		left join 
+		(select aac001,aac002,aac003,aac004,sum(aac006) as sum,aac007,sum(aac013) as aac013,aac009 from invoice_info group by aac001,aac009) a 
+		on a.aac001=b.aac001 and a.aac009=b.aac009
+		left join 
+		sys_user c on c.id=b.printuserid
+	 	WHERE 	b.flag=1
+		<if test="invoiceStatus.aac001 != null and invoiceStatus.aac001 != ''">
+			AND a.aac001 = #{invoiceStatus.aac001} 					
+		</if>
+		<if test="invoiceStatus.aac002 != null and invoiceStatus.aac002 != ''">
+			AND a.aac002 = #{invoiceStatus.aac002}					
+		</if>
+		<if test="invoiceStatus.aac009 != null and invoiceStatus.aac009 != ''">
+			AND a.aac009 = #{invoiceStatus.aac009}					
+		</if> 
+	</select>
+	<update id="updateStatus">
+		UPDATE invoice_arrearage SET 
+			flag = #{flag},printuserid=#{printuserid},printdate=#{printdate} 			
+		WHERE aac001 = #{aac001} and aac009=#{aac009}
+	</update>
+	
+</mapper>
